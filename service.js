@@ -6,7 +6,7 @@ mongoose.Promise = global.Promise
 
 const mongoUri = `mongodb://${env.db}:${env.key}@${env.db}.documents.azure.com:${env.port}/?ssl=true`
 
-mongoose.connect(mongoUri,{useNewUrlParser: true, useUnifiedTopology:true},(err)=>{
+mongoose.connect(mongoUri,{useNewUrlParser: true, useUnifiedTopology:true, useCreateIndex: true,},(err)=>{
     if(err){
       return console.log("Sambavam")
     }
