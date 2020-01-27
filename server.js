@@ -1,13 +1,25 @@
 var express = require('express')
 var bodyParser = require('body-parser')
-var multer = require('multer')
+const multer = require('multer')
+const upload = multer({
+    // storage:upload_audio,
+    dest:'avatar',
+    limits: {
+        fileSize: 3000000
+    },
+    fileFilter(req,file,cb){
+        if(!file.originalname.match(/\.jpg$/))
+            cb(new Error("Invalid Pic"))
+        cb(undefined,true)
+    }
+})
 const User = require('./schema')
-const multipart = require('connect-multiparty')
+// const multipart = require('connect-multiparty')
 
 var app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(multipart())
+// app.use(multipart())
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -110,15 +122,20 @@ app.post('/updAttendance', async(req, res) => {
 //     }
 // })
 
-const uploadAudio = multer({
-    // storage:upload_audio,
-    dest:'appAudio/',
-    limits: {
-        fileSize: 3000000
-    }
-})
+// const upload = multer({
+//     // storage:upload_audio,
+//     dest:'appAudio/',
+//     limits: {
+//         fileSize: 3000000
+//     },
+//     fileFilter(req,file,cb){
+//         if(!file.originalname.match(/\.(jpg|jpeg|png)$/))
+//             cb(new Error("Invalid Pic"))
+//         cb(undefined,true)
+//     }
+// })
 
-app.post('/appAudio', uploadAudio.single('audio'),(req, res) => {
+app.post('/appAudio', upload.single('audio'),(req, res) => {
     let {eid} = req.body;
     console.log(req.files)
     res.send({"code": 200, "message": "Audio received successfully"})
