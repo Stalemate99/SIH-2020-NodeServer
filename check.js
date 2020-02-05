@@ -20,7 +20,7 @@ formto.append(
 )
 
 
- axios.post('http://192.169.43.224:2000/temp',form).then((res)=>{
+ axios.post('http://localhost:2000/temp',form).then((res)=>{
     console.log(res)
  }).catch(err=>{
      console.log(err)
